@@ -29,7 +29,7 @@ public class DrawerActivity extends AppCompatActivity
 
     ProgressBar progressBar;
     LinearLayout lower_contact_tab;
-    WebView mywebview;
+   static WebView mywebview;
     int clickcount=0;
 
     LinearLayout btnAboutus;

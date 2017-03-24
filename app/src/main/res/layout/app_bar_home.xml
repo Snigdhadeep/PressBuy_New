@@ -22,11 +22,70 @@
                 android:layout_width="80dp"
                 android:layout_height="60dp"
                 android:src="@drawable/logo"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:paddingRight="@dimen/activity_vertical_margin"
+                >
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_menu_search"/>
+                <RelativeLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/circle"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="20dp"
+                        android:id="@+id/gg"
+
+                        />
+                    <WebView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:text=""
+                        android:textStyle="bold"
+                        android:textColor="#000"
+                        android:gravity="center"
+                        android:id="@+id/toolWeb"
+                        android:layout_alignParentRight="true"
+                        tools:ignore="WebViewLayout" />
+                    </RelativeLayout>
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_menu_shop"
+                   />
+
+                </RelativeLayout>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_navi_menu"
+                  />
+
+            </LinearLayout>
         </android.support.v7.widget.Toolbar>
-        
+
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_home" />
     <android.support.design.widget.FloatingActionButton
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fab"
@@ -47,6 +106,8 @@
         android:layout_gravity="bottom"
         app:backgroundTint="#20c4b8b8"
         app:borderWidth="2dp" />
+
+    <include layout="@layout/content_home" />
 
 
 </android.support.design.widget.CoordinatorLayout>

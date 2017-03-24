@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 24
     buildToolsVersion "23.0.3"
+    useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "com.techpenta.pressbuy"
@@ -26,4 +27,5 @@ dependencies {
     compile 'com.android.support:design:24.2.0'
     compile 'com.synnapps:carouselview:0.0.9'
     compile 'com.mindorks:paracamera:0.2.1'
+
 }

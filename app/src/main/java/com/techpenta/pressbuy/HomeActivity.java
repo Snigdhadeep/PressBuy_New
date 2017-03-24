@@ -39,6 +39,9 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -48,7 +51,8 @@ public class HomeActivity extends AppCompatActivity
     com.mindorks.paracamera.Camera camera;
     int clickcount=0;
     int backclickcount=0;
-    WebView mywebview;
+   static WebView mywebview;
+    WebView toolWeb;
     boolean doubleBackToExitPressedOnce=false;
     LinearLayout btnAboutus;
     LinearLayout btnTermsOfUse;
@@ -57,6 +61,10 @@ public class HomeActivity extends AppCompatActivity
     LinearLayout btnWorkwithUs;
     ImageView navheader1;
     ImageView navheader2;
+   static TextView cartcount;
+    int x=0;
+    long lastSec = 0;
+    private Timer myTimer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +72,9 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
+
+
+
 
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar1);
@@ -74,6 +85,19 @@ public class HomeActivity extends AppCompatActivity
         btnPrivacy=(LinearLayout)findViewById(R.id.btnPrivacy);
         btnContactus=(LinearLayout)findViewById(R.id.btnContactus);
         btnWorkwithUs=(LinearLayout)findViewById(R.id.btnWorkwithUs);
+
+        toolWeb=(WebView) findViewById(R.id.toolWeb) ;
+
+
+        toolWeb.loadUrl("http://www.pressbuy.com/rest-api/");
+
+
+
+
+
+
+        //cart
+
 
 
 
@@ -291,7 +315,38 @@ public class HomeActivity extends AppCompatActivity
 
 
 
+        /*final MyAsynctask myAsynctask = new MyAsynctask(this);
+        myAsynctask.execute("http://www.pressbuy.com/rest-api/");*/
+
+
+       /* final int sekundi =0 ;
+        Timer timer = new Timer();
+        TimerTask t = new TimerTask() {
+            int sec = 0;
+            @Override
+            public void run() {
+                MyAsynctask myAsynctask = new MyAsynctask(getApplicationContext());
+                myAsynctask.execute("http://www.pressbuy.com/rest-api/");
+            }
+        };
+        timer.scheduleAtFixedRate(t,10000,5000);*/
+
+
+
+ /*      while(lastSec>=0) {
+            long sec = System.currentTimeMillis() / 1000;
+            if (sec != lastSec) {
+                //code to run
+                MyAsynctask myAsynctask = new MyAsynctask(this);
+                myAsynctask.execute("http://www.pressbuy.com/rest-api/");
+
+                lastSec = sec;
+            }//If():
+
+        }*/
+
     }//oncreate
+
 
 
     // Get the bitmap and image path onActivityResult of an activity or fragment
@@ -385,6 +440,8 @@ public class HomeActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
+
+
         return true;
     }
 
@@ -395,10 +452,19 @@ public class HomeActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+
+
         //noinspection SimplifiableIfStatement
-        if (id == R.id.jhbjhbh) {
-            return true;
-        }
+      /*  if (id == R.id.hh2) {
+
+
+
+
+          *//* TextView txt=new TextView(getApplicationContext();
+            txt.setBackgroundResource(R.drawable.rect);
+            txt.setText(""+x);
+            item.setActionView(txt);*//*
+        }*/
 
         return super.onOptionsItemSelected(item);
     }

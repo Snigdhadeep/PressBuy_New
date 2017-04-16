@@ -2,9 +2,11 @@ package com.techpenta.pressbuy;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Camera;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +21,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,18 +31,27 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -53,6 +66,7 @@ public class HomeActivity extends AppCompatActivity
     int backclickcount=0;
    static WebView mywebview;
     WebView toolWeb;
+    WebView wvslidecart;
     boolean doubleBackToExitPressedOnce=false;
     LinearLayout btnAboutus;
     LinearLayout btnTermsOfUse;
@@ -61,7 +75,16 @@ public class HomeActivity extends AppCompatActivity
     LinearLayout btnWorkwithUs;
     ImageView navheader1;
     ImageView navheader2;
+    ImageView menuSearchToolbar;
+    FrameLayout menuBagToolbar;
+    ImageView menuNavToolbar;
+    RelativeLayout slidetab2;
+    Boolean slidecount=true;
+
+
+    static  WebView tvCounter_value;
    static TextView cartcount;
+    long delayInMillis = 3000;
     int x=0;
     long lastSec = 0;
     private Timer myTimer;
@@ -85,12 +108,58 @@ public class HomeActivity extends AppCompatActivity
         btnPrivacy=(LinearLayout)findViewById(R.id.btnPrivacy);
         btnContactus=(LinearLayout)findViewById(R.id.btnContactus);
         btnWorkwithUs=(LinearLayout)findViewById(R.id.btnWorkwithUs);
+        tvCounter_value=(WebView) findViewById(R.id.tvCounter_value);
 
-        toolWeb=(WebView) findViewById(R.id.toolWeb) ;
+        // here the icon webview
+
+        wvslidecart=(WebView) findViewById(R.id.wvslidecart) ;
+        /* toolWeb.loadUrl("http://www.pressbuy.com/rest-api/");*/
 
 
-        toolWeb.loadUrl("http://www.pressbuy.com/rest-api/");
+        slidetab2=(RelativeLayout) findViewById(R.id.slidetab2);
+        menuSearchToolbar=(ImageView)findViewById(R.id.menuSearchToolbar);
+        menuBagToolbar=(FrameLayout) findViewById(R.id.menuBagToolbar);
+        menuNavToolbar=(ImageView)findViewById(R.id.menuNavToolbar);
 
+
+
+
+        menuBagToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if(slidecount==true) {
+
+                    wvslidecart.loadUrl("http://www.pressbuy.com/rest-api/");
+                    slidetab2.setVisibility(View.VISIBLE);
+                    Animation animation1 =
+                            AnimationUtils.loadAnimation(getApplicationContext(), R.anim.right_to_left);
+                    slidetab2.setVisibility(View.VISIBLE);
+                    slidetab2.startAnimation(animation1);
+                    slidecount = false;
+                }
+                else {
+                    slidetab2.setVisibility(View.GONE);
+                    slidecount=true;
+                }
+            }
+        });
+
+
+
+
+       /* int delay = 1000; // delay for 1 sec.
+        int period = 10000; // repeat every 10 sec.
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask()
+        {
+            public void run()
+            {
+                toolWeb.loadUrl("http://www.pressbuy.com/rest-api/");
+            }
+        }, delay, period);
+*/
 
 
 
@@ -131,11 +200,7 @@ public class HomeActivity extends AppCompatActivity
         navheader1=(ImageView)header.findViewById(R.id.navicon1);
         navheader2=(ImageView)header.findViewById(R.id.navicon2);
 
-
-
-
         lower_contact_tab.setVisibility(View.GONE);
-
 
 
 
@@ -315,6 +380,8 @@ public class HomeActivity extends AppCompatActivity
 
 
 
+
+
         /*final MyAsynctask myAsynctask = new MyAsynctask(this);
         myAsynctask.execute("http://www.pressbuy.com/rest-api/");*/
 
@@ -333,12 +400,12 @@ public class HomeActivity extends AppCompatActivity
 
 
 
- /*      while(lastSec>=0) {
-            long sec = System.currentTimeMillis() / 1000;
+     /* while(lastSec>=0) {
+            long sec = System.currentTimeMillis() / 500;
             if (sec != lastSec) {
                 //code to run
-                MyAsynctask myAsynctask = new MyAsynctask(this);
-                myAsynctask.execute("http://www.pressbuy.com/rest-api/");
+                DownloadWebPageTask task = new DownloadWebPageTask();
+                task.execute(new String[] { "http://www.pressbuy.com/rest-api/" });
 
                 lastSec = sec;
             }//If():
@@ -346,6 +413,7 @@ public class HomeActivity extends AppCompatActivity
         }*/
 
     }//oncreate
+
 
 
 
@@ -375,7 +443,9 @@ public class HomeActivity extends AppCompatActivity
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             // TODO Auto-generated method stub
             progressBar.setVisibility(View.VISIBLE);
+
             view.loadUrl(url);
+
             return true;
 
         }
@@ -386,8 +456,51 @@ public class HomeActivity extends AppCompatActivity
             super.onPageFinished(view, url);
 
             progressBar.setVisibility(View.GONE);
+            tvCounter_value.loadUrl("http://www.pressbuy.com/rest-api/");
+
 
         }
+    }
+
+    /* An instance of this class will be registered as a JavaScript interface */
+
+
+    private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            for (String url : urls) {
+                DefaultHttpClient client = new DefaultHttpClient();
+                HttpGet httpGet = new HttpGet(url);
+                try {
+                    HttpResponse execute = client.execute(httpGet);
+                    InputStream content = execute.getEntity().getContent();
+
+                    BufferedReader buffer = new BufferedReader(
+                            new InputStreamReader(content));
+                    String s = "";
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                        Log.i("respond",response);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+           // tvCounter_value.setText(Html.fromHtml(result));
+        }
+    }
+
+    public void readWebpage(View view) {
+        DownloadWebPageTask task = new DownloadWebPageTask();
+        task.execute(new String[] { "http://www.pressbuy.com/rest-api/" });
+
     }
 
 
@@ -400,6 +513,16 @@ public class HomeActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (mywebview.canGoBack()) {
+            final ProgressDialog dialog = new ProgressDialog(HomeActivity.this);
+            dialog.show();
+            long delayInMillis = 3000;
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    dialog.dismiss();
+                }
+            }, delayInMillis);
             mywebview.goBack();
         } else if(doubleBackToExitPressedOnce) {
             super.onBackPressed();

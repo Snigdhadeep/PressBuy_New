@@ -17,33 +17,6 @@
         android:layout_gravity="center"
         android:id="@+id/progressBar1"/>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="50dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-           >
-
-
-            <WebView
-            android:id="@+id/webView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            />
-
-
-
-
-
-        </LinearLayout>
-
-    </ScrollView>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,6 +41,104 @@
         <include layout="@layout/lowertab" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:background="@color/tabcolor"
+        android:id="@+id/slidetab2"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="90dp"
+
+        >
+
+
+      <RelativeLayout
+       android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+          android:layout_alignParentLeft="true"
+          android:layout_marginLeft="20dp"
+         >
+
+          <ImageView
+              android:layout_width="70dp"
+              android:layout_height="wrap_content"
+              android:src="@drawable/slideaddcart"
+
+               />
+
+          <FrameLayout
+              android:layout_width="28dp"
+              android:layout_height="30dp"
+              android:background="@drawable/rect_cart"
+              tools:ignore="WebViewLayout"
+              android:layout_marginLeft="32dp"
+              android:layout_marginTop="12dp"
+
+>
+
+              <WebView
+                  android:id="@+id/wvslidecart"
+                  android:layout_width="28dp"
+                  android:layout_height="30dp"
+                  android:layout_gravity="center"
+                  />
+          </FrameLayout>
+
+
+      </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+        >
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/slideremovecart"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+           >
+
+
+
+            <WebView
+            android:id="@+id/webView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            />
+
+
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+    </LinearLayout>
+    </LinearLayout>
 
 
 </FrameLayout>

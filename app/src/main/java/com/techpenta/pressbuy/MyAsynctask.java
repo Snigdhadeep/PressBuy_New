@@ -12,8 +12,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,9 +49,9 @@ public class MyAsynctask extends AsyncTask<String,Void,String> {
     protected String doInBackground(String... strings) {
 
 
-        String built=strings[0];
+       String built=strings[0];
 
-        String response = "";
+     /*   String response = "";
         for (String url : strings) {
             DefaultHttpClient client = new DefaultHttpClient();
             HttpGet httpGet = new HttpGet(url);
@@ -65,16 +69,42 @@ public class MyAsynctask extends AsyncTask<String,Void,String> {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }*/
+        try {
+            getHtml(built);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return response;
+        return null;
+
+
     }
 
     @Override
     protected void onPostExecute(String s) {
-
-        Toast.makeText(context, ""+s, Toast.LENGTH_SHORT).show();
-        HomeActivity.cartcount.setText(Html.fromHtml(s));
+    //   HomeActivity.tvCounter_value.setText(s);
 
 
     }
+    public static String getHtml(String url) throws ClientProtocolException, IOException {
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpContext localContext = new BasicHttpContext();
+        HttpGet httpGet = new HttpGet(url);
+        HttpResponse response = httpClient.execute(httpGet, localContext);
+        String result = "";
+
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(
+                        response.getEntity().getContent()
+                )
+        );
+
+        String line = null;
+        while ((line = reader.readLine()) != null){
+            result += line + "\n";
+        }
+        return result;
+    }
+
+
 }

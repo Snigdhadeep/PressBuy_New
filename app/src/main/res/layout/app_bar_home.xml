@@ -34,44 +34,46 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="60dp"
+                    android:id="@+id/menuSearchToolbar"
                     android:layout_alignParentRight="true"
                     android:src="@drawable/ic_menu_search"/>
                 <RelativeLayout
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_gravity="center">
+                    android:layout_gravity="center"
+                   >
 
-                    <RelativeLayout
+                    <FrameLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/menuBagToolbar"
                         >
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="30dp"
-                        android:background="@drawable/circle"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginLeft="20dp"
-                        android:id="@+id/gg"
+                        <ImageView
 
-                        />
-                    <WebView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:text=""
-                        android:textStyle="bold"
-                        android:textColor="#000"
-                        android:gravity="center"
-                        android:id="@+id/toolWeb"
-                        android:layout_alignParentRight="true"
-                        tools:ignore="WebViewLayout" />
-                    </RelativeLayout>
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_alignParentRight="true"
-                    android:src="@drawable/ic_menu_shop"
-                   />
+                            android:layout_width="55dp"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:src="@drawable/ic_menu_shop"
+                           />
+                    </FrameLayout>
+                    <FrameLayout
+                        android:layout_width="28dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/rect_cart"
+                        tools:ignore="WebViewLayout">
+
+                        <WebView
+                            android:id="@+id/tvCounter_value"
+                            android:layout_width="28dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                           />
+                  </FrameLayout>
+
+
+
+
 
                 </RelativeLayout>
                 <ImageView
@@ -79,6 +81,7 @@
                     android:layout_height="60dp"
                     android:layout_alignParentRight="true"
                     android:src="@drawable/ic_navi_menu"
+                    android:id="@+id/menuNavToolbar"
                   />
 
             </LinearLayout>

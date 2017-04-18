@@ -19,6 +19,7 @@ import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -40,6 +41,13 @@ public class LowerTab extends AppCompatActivity
     LinearLayout btnWorkwithUs;
     ImageView navheader1;
     ImageView navheader2;
+    WebView  tvCounter_value;
+    ImageView menuSearchToolbar;
+    FrameLayout menuBagToolbar;
+    ImageView menuNavToolbar;
+    LinearLayout slidetab2;
+    Boolean slidecount=true;
+    WebView wvslidecart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +65,43 @@ public class LowerTab extends AppCompatActivity
         btnPrivacy=(LinearLayout)findViewById(R.id.btnPrivacy);
         btnContactus=(LinearLayout)findViewById(R.id.btnContactus);
         btnWorkwithUs=(LinearLayout)findViewById(R.id.btnWorkwithUs);
+
+        tvCounter_value=(WebView) findViewById(R.id.tvCounter_value);
+
+        wvslidecart=(WebView) findViewById(R.id.wvslidecart) ;
+        /* toolWeb.loadUrl("http://www.pressbuy.com/rest-api/");*/
+
+
+        slidetab2=(LinearLayout) findViewById(R.id.slidetab2);
+        menuSearchToolbar=(ImageView)findViewById(R.id.menuSearchToolbar);
+        menuBagToolbar=(FrameLayout) findViewById(R.id.menuBagToolbar);
+        menuNavToolbar=(ImageView)findViewById(R.id.menuNavToolbar);
+
+
+
+
+        menuBagToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if(slidecount==true) {
+
+                    wvslidecart.loadUrl("http://www.pressbuy.com/rest-api/");
+                    slidetab2.setVisibility(View.VISIBLE);
+                    Animation animation1 =
+                            AnimationUtils.loadAnimation(getApplicationContext(), R.anim.right_to_left);
+                    slidetab2.setVisibility(View.VISIBLE);
+                    slidetab2.startAnimation(animation1);
+                    slidecount = false;
+                }
+                else {
+                    slidetab2.setVisibility(View.GONE);
+                    slidecount=true;
+                }
+            }
+        });
+
 
         final FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
         fab2.setOnClickListener(new View.OnClickListener() {
@@ -249,6 +294,9 @@ public class LowerTab extends AppCompatActivity
             super.onPageFinished(view, url);
 
             progressBar.setVisibility(View.GONE);
+            tvCounter_value.loadUrl("http://www.pressbuy.com/rest-api/");
+
+
 
         }
     }
@@ -263,7 +311,7 @@ public class LowerTab extends AppCompatActivity
         }
     }
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.lower_tab, menu);
@@ -283,7 +331,7 @@ public class LowerTab extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

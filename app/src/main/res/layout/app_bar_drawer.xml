@@ -22,6 +22,24 @@
                 android:layout_width="80dp"
                 android:layout_height="60dp"
                 android:src="@drawable/logo"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:paddingRight="@dimen/activity_vertical_margin"
+                >
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="60dp"
+                    android:id="@+id/menuSearchToolbar"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_menu_search"/>
+                <include layout="@layout/toolbar_icons"></include>
+
+            </LinearLayout>
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>

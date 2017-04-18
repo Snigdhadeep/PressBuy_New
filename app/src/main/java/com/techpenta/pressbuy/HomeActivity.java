@@ -2,40 +2,28 @@ package com.techpenta.pressbuy;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Camera;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,7 +35,6 @@ import android.widget.Toast;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -76,11 +63,21 @@ public class HomeActivity extends AppCompatActivity
     ImageView navheader1;
     ImageView navheader2;
     ImageView menuSearchToolbar;
-    FrameLayout menuBagToolbar;
+    LinearLayout menuBagToolbar;
     ImageView menuNavToolbar;
+    LinearLayout llsearch;
+    LinearLayout llcart;
+    LinearLayout lllocation;
     RelativeLayout slidetab2;
-    Boolean slidecount=true;
+    LinearLayout slidetab1;
+    LinearLayout slidetab3;
+    Boolean slidecount1=true;
+    Boolean slidecount2=true;
+    Boolean slidecount3=true;
 
+    EditText etSearch;
+    ImageView ivSearch;
+    String txtSearch;
 
     static  WebView tvCounter_value;
    static TextView cartcount;
@@ -116,11 +113,66 @@ public class HomeActivity extends AppCompatActivity
         /* toolWeb.loadUrl("http://www.pressbuy.com/rest-api/");*/
 
 
-        slidetab2=(RelativeLayout) findViewById(R.id.slidetab2);
+        llsearch=(LinearLayout) findViewById(R.id.llsearch);
+        llcart=(LinearLayout) findViewById(R.id.llcart);
+        lllocation=(LinearLayout)findViewById(R.id.lllocation);
+
+        slidetab2=(RelativeLayout) findViewById(R.id.slidetab2cart);
+        slidetab1=(LinearLayout) findViewById(R.id.slidetab1search);
+        slidetab3=(LinearLayout)findViewById(R.id.slidetab3location);
         menuSearchToolbar=(ImageView)findViewById(R.id.menuSearchToolbar);
-        menuBagToolbar=(FrameLayout) findViewById(R.id.menuBagToolbar);
+        menuBagToolbar=(LinearLayout) findViewById(R.id.menuBagToolbar);
         menuNavToolbar=(ImageView)findViewById(R.id.menuNavToolbar);
 
+
+        etSearch=(EditText)findViewById(R.id.etSearch);
+        ivSearch=(ImageView)findViewById(R.id.ivSearch);
+
+
+
+
+
+        ivSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txtSearch=etSearch.getText().toString();
+                final Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
+                i.putExtra("idsearch1", "https://www.pressbuy.com/?s=");
+                i.putExtra("txtSearch",""+txtSearch);
+                i.putExtra("idsearch2","&header-off=1");
+                Log.i("txtSearch",txtSearch);
+                startActivity(i);
+            }
+        });
+
+
+
+
+
+
+        menuSearchToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                llcart.setVisibility(View.GONE);
+                if(slidecount1==true) {
+                    lllocation.setVisibility(View.GONE);
+                    llsearch.setVisibility(View.VISIBLE);
+                    slidetab1.setVisibility(View.VISIBLE);
+                    Animation animation1 =
+                            AnimationUtils.loadAnimation(getApplicationContext(), R.anim.right_to_left);
+
+                    slidetab1.startAnimation(animation1);
+                    slidecount1 = false;
+                }
+                else {
+
+                    slidetab1.setVisibility(View.GONE);
+                    llsearch.setVisibility(View.GONE);
+                    slidecount1=true;
+                }
+            }
+        });
 
 
 
@@ -129,23 +181,58 @@ public class HomeActivity extends AppCompatActivity
             public void onClick(View v) {
 
 
-                if(slidecount==true) {
+                lllocation.setVisibility(View.GONE);
+                llsearch.setVisibility(View.GONE);
+                if(slidecount2==true) {
+
 
                     wvslidecart.loadUrl("http://www.pressbuy.com/rest-api/");
+                    llcart.setVisibility(View.VISIBLE);
                     slidetab2.setVisibility(View.VISIBLE);
                     Animation animation1 =
                             AnimationUtils.loadAnimation(getApplicationContext(), R.anim.right_to_left);
-                    slidetab2.setVisibility(View.VISIBLE);
                     slidetab2.startAnimation(animation1);
-                    slidecount = false;
+                    slidecount2 = false;
                 }
                 else {
+
                     slidetab2.setVisibility(View.GONE);
-                    slidecount=true;
+
+                    llcart.setVisibility(View.GONE);
+                    slidecount2=true;
                 }
             }
         });
 
+
+        menuNavToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                llcart.setVisibility(View.GONE);
+                llsearch.setVisibility(View.GONE);
+                if(slidecount3==true) {
+
+
+
+                    lllocation.setVisibility(View.VISIBLE);
+                    slidetab3.setVisibility(View.VISIBLE);
+                    Animation animation1 =
+                            AnimationUtils.loadAnimation(getApplicationContext(), R.anim.right_to_left);
+
+                    slidetab3.startAnimation(animation1);
+                    slidecount3 = false;
+                }
+                else {
+
+                    slidetab3.setVisibility(View.GONE);
+                    lllocation.setVisibility(View.GONE);
+                    slidecount3=true;
+                }
+
+            }
+        });
 
 
 

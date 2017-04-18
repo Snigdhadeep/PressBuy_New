@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -114,16 +115,28 @@ public class DrawerActivity extends AppCompatActivity
 
         Intent iin= getIntent();
         String url = iin.getExtras().getString("id");
+        String idsearch1 = iin.getExtras().getString("idsearch1");
+        String txtSearch = iin.getExtras().getString("txtSearch");
+        String idsearch2 = iin.getExtras().getString("idsearch2");
+        Log.i("urlfinal",idsearch1+txtSearch+idsearch2);
+        String url2=idsearch1+txtSearch+idsearch2;
 
 
         lower_contact_tab.setVisibility(View.INVISIBLE);
 
 
         if(CheckNetwork.isInternetAvailable(getApplicationContext())) {
+
             mywebview = (WebView) findViewById(R.id.webView3);
             WebSettings webSettings = mywebview.getSettings();
             webSettings.setJavaScriptEnabled(true);
+            if(url!=null){
             mywebview.loadUrl(url);
+            }
+            else
+            {
+                mywebview.loadUrl(url2);
+            }
             mywebview.setWebViewClient(new myWebClient());
 
         }else {
@@ -262,7 +275,7 @@ public class DrawerActivity extends AppCompatActivity
         }
     }
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.drawer, menu);
@@ -282,7 +295,7 @@ public class DrawerActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
+ <!--   <item
         android:id="@+id/jhvbh"
         android:orderInCategory="100"
         android:title=""
@@ -19,5 +19,5 @@
         android:orderInCategory="100"
         android:title=""
         android:icon="@drawable/ic_navi_menu"
-        app:showAsAction="always" />
+        app:showAsAction="always" />-->
 </menu>

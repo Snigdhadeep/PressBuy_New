@@ -30,6 +30,7 @@
             android:layout_height="50dp"
             android:background="#fdfbfb"
             android:layout_marginTop="20dp"
+            android:id="@+id/etLocation"
             />
 
     </LinearLayout>
@@ -46,6 +47,7 @@
             android:background="@color/tabcolor"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
+            android:id="@+id/ivLocation"
             />
 
     </LinearLayout>

@@ -79,6 +79,13 @@ public class HomeActivity extends AppCompatActivity
     ImageView ivSearch;
     String txtSearch;
 
+    ImageView slideaddcart;
+    ImageView slideremovecart;
+
+    EditText etLocation;
+    ImageView ivLocation;
+    String txtLocationSearch;
+
     static  WebView tvCounter_value;
    static TextView cartcount;
     long delayInMillis = 3000;
@@ -128,6 +135,11 @@ public class HomeActivity extends AppCompatActivity
         etSearch=(EditText)findViewById(R.id.etSearch);
         ivSearch=(ImageView)findViewById(R.id.ivSearch);
 
+        slideaddcart=(ImageView)findViewById(R.id.slideaddcart);
+        slideremovecart=(ImageView)findViewById(R.id.slideremovecart);
+
+        etLocation=(EditText)findViewById(R.id.etLocation);
+        ivLocation=(ImageView)findViewById(R.id.ivLocation);
 
 
 
@@ -204,6 +216,23 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
+        slideaddcart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
+                i.putExtra("id", "https://www.pressbuy.com/cart/?header-off=1");
+                startActivity(i);
+            }
+        });
+        slideremovecart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
+                i.putExtra("id", "http://www.pressbuy.com/cart/?empty-cart&header-off=1");
+                startActivity(i);
+            }
+        });
+
 
         menuNavToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -233,6 +262,20 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
+
+
+        ivLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txtLocationSearch=etLocation.getText().toString();
+                final Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
+                i.putExtra("idsearch1", "https://www.pressbuy.com/search-location/?header-off=1&&zip=%5C");
+                i.putExtra("txtSearch",""+txtLocationSearch);
+                Log.i("txtSearch",txtLocationSearch);
+                startActivity(i);
+            }
+        });
+
 
 
 

@@ -51,6 +51,7 @@
                     android:id="@+id/tvCounter_value"
                     android:layout_width="20dp"
                     android:layout_height="40dp"
+                    android:background="#ef1616"
 
                     android:layout_gravity="center|right"
 

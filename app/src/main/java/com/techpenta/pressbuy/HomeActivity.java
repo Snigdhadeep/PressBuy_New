@@ -113,10 +113,12 @@ public class HomeActivity extends AppCompatActivity
         btnContactus=(LinearLayout)findViewById(R.id.btnContactus);
         btnWorkwithUs=(LinearLayout)findViewById(R.id.btnWorkwithUs);
         tvCounter_value=(WebView) findViewById(R.id.tvCounter_value);
+        tvCounter_value.setBackgroundColor(Color.RED);
 
         // here the icon webview
 
         wvslidecart=(WebView) findViewById(R.id.wvslidecart) ;
+        wvslidecart.setBackgroundColor(Color.RED);
         /* toolWeb.loadUrl("http://www.pressbuy.com/rest-api/");*/
 
 
@@ -198,7 +200,7 @@ public class HomeActivity extends AppCompatActivity
                 if(slidecount2==true) {
 
 
-                    wvslidecart.loadUrl("http://www.pressbuy.com/rest-api/");
+                    wvslidecart.loadUrl("http://www.pressbuy.com/rest-api-android/");
                     llcart.setVisibility(View.VISIBLE);
                     slidetab2.setVisibility(View.VISIBLE);
                     Animation animation1 =
@@ -338,7 +340,7 @@ public class HomeActivity extends AppCompatActivity
                 mywebview = (WebView) findViewById(R.id.webView1);
                 WebSettings webSettings = mywebview.getSettings();
                 webSettings.setJavaScriptEnabled(true);
-                mywebview.loadUrl("http://www.pressbuy.com/mobile-home/");
+                mywebview.loadUrl("http://www.pressbuy.com/mobile-home/?header-off=1");
                 mywebview.setWebViewClient(new myWebClient());
 
             } else {
@@ -437,7 +439,7 @@ public class HomeActivity extends AppCompatActivity
             public void onClick(View v) {
 
                 Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-                i.putExtra("id", "http://www.pressbuy.com/contact/");
+                i.putExtra("id", "http://www.pressbuy.com/contact/?header-off=1");
                 startActivity(i);
             }
         });
@@ -452,7 +454,7 @@ public class HomeActivity extends AppCompatActivity
                 public void onClick(View v) {
 
                     Intent i = new Intent(getApplicationContext(), LowerTab.class);
-                    i.putExtra("id", "http://www.pressbuy.com/about-us/");
+                    i.putExtra("id", "http://www.pressbuy.com/about-us/?header-off=1");
 
                     if((clickcount%2)!=0) {
                         startActivity(i);
@@ -465,7 +467,7 @@ public class HomeActivity extends AppCompatActivity
                 public void onClick(View v) {
 
                     Intent i = new Intent(getApplicationContext(), LowerTab.class);
-                    i.putExtra("id", "http://www.pressbuy.com/terms-of-use/");
+                    i.putExtra("id", "http://www.pressbuy.com/terms-of-use/?header-off=1");
                     if((clickcount%2)!=0) {
                         startActivity(i);
                     }
@@ -477,7 +479,7 @@ public class HomeActivity extends AppCompatActivity
                 public void onClick(View v) {
 
                     Intent i = new Intent(getApplicationContext(), LowerTab.class);
-                    i.putExtra("id", "http://www.pressbuy.com/privacy/");
+                    i.putExtra("id", "http://www.pressbuy.com/privacy/?header-off=1");
                     if((clickcount%2)!=0) {
                         startActivity(i);
                     }
@@ -488,7 +490,7 @@ public class HomeActivity extends AppCompatActivity
                 public void onClick(View v) {
 
                     Intent i = new Intent(getApplicationContext(), LowerTab.class);
-                    i.putExtra("id", "http://www.pressbuy.com/contact/");
+                    i.putExtra("id", "http://www.pressbuy.com/contact/?header-off=1");
                     if((clickcount%2)!=0) {
                         startActivity(i);
                     }
@@ -500,7 +502,7 @@ public class HomeActivity extends AppCompatActivity
 
 
                     Intent i = new Intent(getApplicationContext(), LowerTab.class);
-                    i.putExtra("id", "http://www.pressbuy.com/work-with-us/");
+                    i.putExtra("id", "http://www.pressbuy.com/work-with-us/?header-off=1");
                     if((clickcount%2)!=0) {
                         startActivity(i);
                     }
@@ -586,7 +588,7 @@ public class HomeActivity extends AppCompatActivity
             super.onPageFinished(view, url);
 
             progressBar.setVisibility(View.GONE);
-            tvCounter_value.loadUrl("http://www.pressbuy.com/rest-api/");
+            tvCounter_value.loadUrl("http://www.pressbuy.com/rest-api-android/");
 
 
         }
@@ -730,36 +732,36 @@ public class HomeActivity extends AppCompatActivity
 
         if (id == R.id.nav_allitems) {
             Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-            i.putExtra("id", "http://www.pressbuy.com/all-items/");
+            i.putExtra("id", "http://www.pressbuy.com/all-items/?header-off=1");
             startActivity(i);
         } else if (id == R.id.nav_forBuyers) {
 
             Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-            i.putExtra("id", "http://www.pressbuy.com/for-buyers/");
+            i.putExtra("id", "http://www.pressbuy.com/for-buyers/?header-off=1");
             startActivity(i);
 
         } else if (id == R.id.nav_forSellers) {
 
             Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-            i.putExtra("id", "http://www.pressbuy.com/for-sellers/");
+            i.putExtra("id", "http://www.pressbuy.com/for-sellers/?header-off=1");
             startActivity(i);
 
         } else if (id == R.id.nav_upload) {
 
             Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-            i.putExtra("id", "http://www.pressbuy.com/upload/");
+            i.putExtra("id", "http://www.pressbuy.com/upload/?header-off=1");
             startActivity(i);
 
         } else if (id == R.id.nav_faq) {
 
             Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-            i.putExtra("id", "http://www.pressbuy.com/faq/");
+            i.putExtra("id", "http://www.pressbuy.com/faq/?header-off=1");
             startActivity(i);
 
         } else if (id == R.id.nav_contact) {
 
             Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-            i.putExtra("id", "http://www.pressbuy.com/contact/");
+            i.putExtra("id", "http://www.pressbuy.com/contact/?header-off=1");
             startActivity(i);
 
 

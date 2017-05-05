@@ -17,104 +17,35 @@
         android:layout_gravity="center"
         android:id="@+id/progressBar1"/>
 
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-
-        <!--covers slidecartTab-->
-
-
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
 
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:background="@color/tabcolor"
-                android:layout_width="match_parent"
-                android:id="@+id/llsearch"
-                android:visibility="gone"
-                android:layout_height="90dp"
 
-                >
-
-
-                <include layout="@layout/slidesearch_tab"></include>
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:background="@color/tabcolor"
-                android:layout_width="match_parent"
-                android:id="@+id/llcart"
-                android:visibility="gone"
-                android:layout_height="90dp"
-
-                >
-
-                <include layout="@layout/slidecart_tab"></include>
-
-            </LinearLayout>
+            <WebView
+                android:id="@+id/webView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                />
 
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:background="@color/tabcolor"
-                android:layout_width="match_parent"
-                android:id="@+id/lllocation"
-                android:visibility="gone"
-                android:layout_height="130dp"
-
-                >
-
-                <include layout="@layout/slidelocation_tab"></include>
-
-            </LinearLayout>
 
 
 
         </LinearLayout>
 
-        <!--covers slidecartTab-->
+    </ScrollView>
 
-
-        <!--contains webview-->
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="50dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                >
-
-
-
-                <WebView
-                    android:id="@+id/webView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    />
-
-
-
-
-
-            </LinearLayout>
-
-        </ScrollView>
-
-        <!--webview covered-->
-
-    </LinearLayout>
-       <LinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

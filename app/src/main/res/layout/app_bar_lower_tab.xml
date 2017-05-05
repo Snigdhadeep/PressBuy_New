@@ -22,13 +22,9 @@
                 android:layout_width="80dp"
                 android:layout_height="60dp"
                 android:src="@drawable/logo"/>
-
-
-            <include layout="@layout/toolbar_icons"></include>
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
-
 
     <include layout="@layout/content_lower_tab" />
 

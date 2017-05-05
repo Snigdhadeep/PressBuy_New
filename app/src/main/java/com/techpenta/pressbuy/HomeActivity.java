@@ -2,45 +2,52 @@ package com.techpenta.pressbuy;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Camera;
 import android.graphics.Color;
-import android.os.AsyncTask;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.EditText;
-import android.widget.FrameLayout;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.w3c.dom.Text;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 
 public class HomeActivity extends AppCompatActivity
@@ -51,9 +58,7 @@ public class HomeActivity extends AppCompatActivity
     com.mindorks.paracamera.Camera camera;
     int clickcount=0;
     int backclickcount=0;
-   static WebView mywebview;
-    WebView toolWeb;
-    WebView wvslidecart;
+    WebView mywebview;
     boolean doubleBackToExitPressedOnce=false;
     LinearLayout btnAboutus;
     LinearLayout btnTermsOfUse;
@@ -62,36 +67,21 @@ public class HomeActivity extends AppCompatActivity
     LinearLayout btnWorkwithUs;
     ImageView navheader1;
     ImageView navheader2;
-    ImageView menuSearchToolbar;
-    LinearLayout menuBagToolbar;
-    ImageView menuNavToolbar;
-    LinearLayout llsearch;
-    LinearLayout llcart;
-    LinearLayout lllocation;
-    RelativeLayout slidetab2;
-    LinearLayout slidetab1;
-    LinearLayout slidetab3;
-    Boolean slidecount1=true;
-    Boolean slidecount2=true;
-    Boolean slidecount3=true;
 
-    EditText etSearch;
-    ImageView ivSearch;
-    String txtSearch;
+    // LogCat tag
+    private static final String TAG = HomeActivity.class.getSimpleName();
 
-    ImageView slideaddcart;
-    ImageView slideremovecart;
 
-    EditText etLocation;
-    ImageView ivLocation;
-    String txtLocationSearch;
+    // Camera activity request codes
+    private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
+    private static final int CAMERA_CAPTURE_VIDEO_REQUEST_CODE = 200;
 
-    static  WebView tvCounter_value;
-   static TextView cartcount;
-    long delayInMillis = 3000;
-    int x=0;
-    long lastSec = 0;
-    private Timer myTimer;
+    public static final int MEDIA_TYPE_IMAGE = 1;
+    public static final int MEDIA_TYPE_VIDEO = 2;
+
+    private Uri fileUri; // file url to store image/video
+
+    private Button btnCapturePicture, btnRecordVideo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,9 +89,6 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
-
-
-
 
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar1);
@@ -112,193 +99,6 @@ public class HomeActivity extends AppCompatActivity
         btnPrivacy=(LinearLayout)findViewById(R.id.btnPrivacy);
         btnContactus=(LinearLayout)findViewById(R.id.btnContactus);
         btnWorkwithUs=(LinearLayout)findViewById(R.id.btnWorkwithUs);
-        tvCounter_value=(WebView) findViewById(R.id.tvCounter_value);
-        tvCounter_value.setBackgroundColor(Color.RED);
-
-        // here the icon webview
-
-        wvslidecart=(WebView) findViewById(R.id.wvslidecart) ;
-        wvslidecart.setBackgroundColor(Color.RED);
-        /* toolWeb.loadUrl("http://www.pressbuy.com/rest-api/");*/
-
-
-        llsearch=(LinearLayout) findViewById(R.id.llsearch);
-        llcart=(LinearLayout) findViewById(R.id.llcart);
-        lllocation=(LinearLayout)findViewById(R.id.lllocation);
-
-        slidetab2=(RelativeLayout) findViewById(R.id.slidetab2cart);
-        slidetab1=(LinearLayout) findViewById(R.id.slidetab1search);
-        slidetab3=(LinearLayout)findViewById(R.id.slidetab3location);
-        menuSearchToolbar=(ImageView)findViewById(R.id.menuSearchToolbar);
-        menuBagToolbar=(LinearLayout) findViewById(R.id.menuBagToolbar);
-        menuNavToolbar=(ImageView)findViewById(R.id.menuNavToolbar);
-
-
-        etSearch=(EditText)findViewById(R.id.etSearch);
-        ivSearch=(ImageView)findViewById(R.id.ivSearch);
-
-        slideaddcart=(ImageView)findViewById(R.id.slideaddcart);
-        slideremovecart=(ImageView)findViewById(R.id.slideremovecart);
-
-        etLocation=(EditText)findViewById(R.id.etLocation);
-        ivLocation=(ImageView)findViewById(R.id.ivLocation);
-
-
-
-
-        ivSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                txtSearch=etSearch.getText().toString();
-                final Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-                i.putExtra("idsearch1", "https://www.pressbuy.com/?s=");
-                i.putExtra("txtSearch",""+txtSearch);
-                i.putExtra("idsearch2","&header-off=1");
-                Log.i("txtSearch",txtSearch);
-                startActivity(i);
-            }
-        });
-
-
-
-
-
-
-        menuSearchToolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                llcart.setVisibility(View.GONE);
-                if(slidecount1==true) {
-                    lllocation.setVisibility(View.GONE);
-                    llsearch.setVisibility(View.VISIBLE);
-                    slidetab1.setVisibility(View.VISIBLE);
-                    Animation animation1 =
-                            AnimationUtils.loadAnimation(getApplicationContext(), R.anim.right_to_left);
-
-                    slidetab1.startAnimation(animation1);
-                    slidecount1 = false;
-                }
-                else {
-
-                    slidetab1.setVisibility(View.GONE);
-                    llsearch.setVisibility(View.GONE);
-                    slidecount1=true;
-                }
-            }
-        });
-
-
-
-        menuBagToolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                lllocation.setVisibility(View.GONE);
-                llsearch.setVisibility(View.GONE);
-                if(slidecount2==true) {
-
-
-                    wvslidecart.loadUrl("http://www.pressbuy.com/rest-api-android/");
-                    llcart.setVisibility(View.VISIBLE);
-                    slidetab2.setVisibility(View.VISIBLE);
-                    Animation animation1 =
-                            AnimationUtils.loadAnimation(getApplicationContext(), R.anim.right_to_left);
-                    slidetab2.startAnimation(animation1);
-                    slidecount2 = false;
-                }
-                else {
-
-                    slidetab2.setVisibility(View.GONE);
-
-                    llcart.setVisibility(View.GONE);
-                    slidecount2=true;
-                }
-            }
-        });
-
-        slideaddcart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-                i.putExtra("id", "https://www.pressbuy.com/cart/?header-off=1");
-                startActivity(i);
-            }
-        });
-        slideremovecart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-                i.putExtra("id", "http://www.pressbuy.com/cart/?empty-cart&header-off=1");
-                startActivity(i);
-            }
-        });
-
-
-        menuNavToolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                llcart.setVisibility(View.GONE);
-                llsearch.setVisibility(View.GONE);
-                if(slidecount3==true) {
-
-
-
-                    lllocation.setVisibility(View.VISIBLE);
-                    slidetab3.setVisibility(View.VISIBLE);
-                    Animation animation1 =
-                            AnimationUtils.loadAnimation(getApplicationContext(), R.anim.right_to_left);
-
-                    slidetab3.startAnimation(animation1);
-                    slidecount3 = false;
-                }
-                else {
-
-                    slidetab3.setVisibility(View.GONE);
-                    lllocation.setVisibility(View.GONE);
-                    slidecount3=true;
-                }
-
-            }
-        });
-
-
-        ivLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                txtLocationSearch=etLocation.getText().toString();
-                final Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-                i.putExtra("idsearch1", "https://www.pressbuy.com/search-location/?header-off=1&&zip=%5C");
-                i.putExtra("txtSearch",""+txtLocationSearch);
-                Log.i("txtSearch",txtLocationSearch);
-                startActivity(i);
-            }
-        });
-
-
-
-
-       /* int delay = 1000; // delay for 1 sec.
-        int period = 10000; // repeat every 10 sec.
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask()
-        {
-            public void run()
-            {
-                toolWeb.loadUrl("http://www.pressbuy.com/rest-api/");
-            }
-        }, delay, period);
-*/
-
-
-
-
-
-        //cart
-
 
 
 
@@ -332,7 +132,11 @@ public class HomeActivity extends AppCompatActivity
         navheader1=(ImageView)header.findViewById(R.id.navicon1);
         navheader2=(ImageView)header.findViewById(R.id.navicon2);
 
+
+
+
         lower_contact_tab.setVisibility(View.GONE);
+
 
 
 
@@ -340,7 +144,7 @@ public class HomeActivity extends AppCompatActivity
                 mywebview = (WebView) findViewById(R.id.webView1);
                 WebSettings webSettings = mywebview.getSettings();
                 webSettings.setJavaScriptEnabled(true);
-                mywebview.loadUrl("http://www.pressbuy.com/mobile-home/?header-off=1");
+                mywebview.loadUrl("http://www.pressbuy.com/mobile-home/");
                 mywebview.setWebViewClient(new myWebClient());
 
             } else {
@@ -354,34 +158,15 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                try {
-                    camera.takePicture();
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+
+                    captureImage();
 
             }
         });
 
         final FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                try {
-                    camera.takePicture();
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
-            }
-        });
 
 //onclick animate lower contact tab
-
-
-
-
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -439,7 +224,7 @@ public class HomeActivity extends AppCompatActivity
             public void onClick(View v) {
 
                 Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-                i.putExtra("id", "http://www.pressbuy.com/contact/?header-off=1");
+                i.putExtra("id", "http://www.pressbuy.com/contact/");
                 startActivity(i);
             }
         });
@@ -454,7 +239,7 @@ public class HomeActivity extends AppCompatActivity
                 public void onClick(View v) {
 
                     Intent i = new Intent(getApplicationContext(), LowerTab.class);
-                    i.putExtra("id", "http://www.pressbuy.com/about-us/?header-off=1");
+                    i.putExtra("id", "http://www.pressbuy.com/about-us/");
 
                     if((clickcount%2)!=0) {
                         startActivity(i);
@@ -467,7 +252,7 @@ public class HomeActivity extends AppCompatActivity
                 public void onClick(View v) {
 
                     Intent i = new Intent(getApplicationContext(), LowerTab.class);
-                    i.putExtra("id", "http://www.pressbuy.com/terms-of-use/?header-off=1");
+                    i.putExtra("id", "http://www.pressbuy.com/terms-of-use/");
                     if((clickcount%2)!=0) {
                         startActivity(i);
                     }
@@ -479,7 +264,7 @@ public class HomeActivity extends AppCompatActivity
                 public void onClick(View v) {
 
                     Intent i = new Intent(getApplicationContext(), LowerTab.class);
-                    i.putExtra("id", "http://www.pressbuy.com/privacy/?header-off=1");
+                    i.putExtra("id", "http://www.pressbuy.com/privacy/");
                     if((clickcount%2)!=0) {
                         startActivity(i);
                     }
@@ -490,7 +275,7 @@ public class HomeActivity extends AppCompatActivity
                 public void onClick(View v) {
 
                     Intent i = new Intent(getApplicationContext(), LowerTab.class);
-                    i.putExtra("id", "http://www.pressbuy.com/contact/?header-off=1");
+                    i.putExtra("id", "http://www.pressbuy.com/contact/");
                     if((clickcount%2)!=0) {
                         startActivity(i);
                     }
@@ -502,7 +287,7 @@ public class HomeActivity extends AppCompatActivity
 
 
                     Intent i = new Intent(getApplicationContext(), LowerTab.class);
-                    i.putExtra("id", "http://www.pressbuy.com/work-with-us/?header-off=1");
+                    i.putExtra("id", "http://www.pressbuy.com/work-with-us/");
                     if((clickcount%2)!=0) {
                         startActivity(i);
                     }
@@ -510,58 +295,37 @@ public class HomeActivity extends AppCompatActivity
                 }
             });
 
-
-
-
-
-        /*final MyAsynctask myAsynctask = new MyAsynctask(this);
-        myAsynctask.execute("http://www.pressbuy.com/rest-api/");*/
-
-
-       /* final int sekundi =0 ;
-        Timer timer = new Timer();
-        TimerTask t = new TimerTask() {
-            int sec = 0;
-            @Override
-            public void run() {
-                MyAsynctask myAsynctask = new MyAsynctask(getApplicationContext());
-                myAsynctask.execute("http://www.pressbuy.com/rest-api/");
-            }
-        };
-        timer.scheduleAtFixedRate(t,10000,5000);*/
-
-
-
-     /* while(lastSec>=0) {
-            long sec = System.currentTimeMillis() / 500;
-            if (sec != lastSec) {
-                //code to run
-                DownloadWebPageTask task = new DownloadWebPageTask();
-                task.execute(new String[] { "http://www.pressbuy.com/rest-api/" });
-
-                lastSec = sec;
-            }//If():
-
-        }*/
+        // Checking camera availability
+        if (!isDeviceSupportCamera()) {
+            Toast.makeText(getApplicationContext(),
+                    "Sorry! Your device doesn't support camera",
+                    Toast.LENGTH_LONG).show();
+            // will close the app if the device does't have camera
+            finish();
+        }
 
     }//oncreate
+
+
+    /**
+     * Checking device has camera hardware or not
+     * */
+    private boolean isDeviceSupportCamera() {
+        if (getApplicationContext().getPackageManager().hasSystemFeature(
+                PackageManager.FEATURE_CAMERA)) {
+            // this device has a camera
+            return true;
+        } else {
+            // no camera on this device
+            return false;
+        }
+    }
 
 
 
 
     // Get the bitmap and image path onActivityResult of an activity or fragment
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == com.mindorks.paracamera.Camera.REQUEST_TAKE_PHOTO){
-            Bitmap bitmap = camera.getCameraBitmap();
-            if(bitmap != null) {
-                Toast.makeText(this, "Picture is taken", Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(this.getApplicationContext(),"Picture not taken!",Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+
 
 
     public class myWebClient extends WebViewClient {
@@ -575,9 +339,7 @@ public class HomeActivity extends AppCompatActivity
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             // TODO Auto-generated method stub
             progressBar.setVisibility(View.VISIBLE);
-
             view.loadUrl(url);
-
             return true;
 
         }
@@ -588,51 +350,8 @@ public class HomeActivity extends AppCompatActivity
             super.onPageFinished(view, url);
 
             progressBar.setVisibility(View.GONE);
-            tvCounter_value.loadUrl("http://www.pressbuy.com/rest-api-android/");
-
 
         }
-    }
-
-    /* An instance of this class will be registered as a JavaScript interface */
-
-
-    private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-            String response = "";
-            for (String url : urls) {
-                DefaultHttpClient client = new DefaultHttpClient();
-                HttpGet httpGet = new HttpGet(url);
-                try {
-                    HttpResponse execute = client.execute(httpGet);
-                    InputStream content = execute.getEntity().getContent();
-
-                    BufferedReader buffer = new BufferedReader(
-                            new InputStreamReader(content));
-                    String s = "";
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
-                        Log.i("respond",response);
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            return response;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-           // tvCounter_value.setText(Html.fromHtml(result));
-        }
-    }
-
-    public void readWebpage(View view) {
-        DownloadWebPageTask task = new DownloadWebPageTask();
-        task.execute(new String[] { "http://www.pressbuy.com/rest-api/" });
-
     }
 
 
@@ -645,16 +364,6 @@ public class HomeActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (mywebview.canGoBack()) {
-            final ProgressDialog dialog = new ProgressDialog(HomeActivity.this);
-            dialog.show();
-            long delayInMillis = 3000;
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    dialog.dismiss();
-                }
-            }, delayInMillis);
             mywebview.goBack();
         } else if(doubleBackToExitPressedOnce) {
             super.onBackPressed();
@@ -695,8 +404,6 @@ public class HomeActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
-
-
         return true;
     }
 
@@ -707,19 +414,10 @@ public class HomeActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-
-
         //noinspection SimplifiableIfStatement
-      /*  if (id == R.id.hh2) {
-
-
-
-
-          *//* TextView txt=new TextView(getApplicationContext();
-            txt.setBackgroundResource(R.drawable.rect);
-            txt.setText(""+x);
-            item.setActionView(txt);*//*
-        }*/
+        if (id == R.id.jhbjhbh) {
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -732,36 +430,36 @@ public class HomeActivity extends AppCompatActivity
 
         if (id == R.id.nav_allitems) {
             Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-            i.putExtra("id", "http://www.pressbuy.com/all-items/?header-off=1");
+            i.putExtra("id", "http://www.pressbuy.com/all-items/");
             startActivity(i);
         } else if (id == R.id.nav_forBuyers) {
 
             Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-            i.putExtra("id", "http://www.pressbuy.com/for-buyers/?header-off=1");
+            i.putExtra("id", "http://www.pressbuy.com/for-buyers/");
             startActivity(i);
 
         } else if (id == R.id.nav_forSellers) {
 
             Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-            i.putExtra("id", "http://www.pressbuy.com/for-sellers/?header-off=1");
+            i.putExtra("id", "http://www.pressbuy.com/for-sellers/");
             startActivity(i);
 
         } else if (id == R.id.nav_upload) {
 
             Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-            i.putExtra("id", "http://www.pressbuy.com/upload/?header-off=1");
+            i.putExtra("id", "http://www.pressbuy.com/upload/");
             startActivity(i);
 
         } else if (id == R.id.nav_faq) {
 
             Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-            i.putExtra("id", "http://www.pressbuy.com/faq/?header-off=1");
+            i.putExtra("id", "http://www.pressbuy.com/faq/");
             startActivity(i);
 
         } else if (id == R.id.nav_contact) {
 
             Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-            i.putExtra("id", "http://www.pressbuy.com/contact/?header-off=1");
+            i.putExtra("id", "http://www.pressbuy.com/contact/");
             startActivity(i);
 
 
@@ -771,4 +469,170 @@ public class HomeActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+
+    /**
+     * Launching camera app to capture image
+     */
+    private void captureImage() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+
+        // start the image capture Intent
+        startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+    }
+
+    /**
+     * Launching camera app to record video
+     */
+    private void recordVideo() {
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+
+        fileUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
+
+        // set video quality
+        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file
+        // name
+
+        // start the video capture Intent
+        startActivityForResult(intent, CAMERA_CAPTURE_VIDEO_REQUEST_CODE);
+    }
+
+    /**
+     * Here we store the file url as it will be null after returning from camera
+     * app
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // save file url in bundle as it will be null on screen orientation
+        // changes
+        outState.putParcelable("file_uri", fileUri);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // get the file url
+        fileUri = savedInstanceState.getParcelable("file_uri");
+    }
+
+
+
+    /**
+     * Receiving activity result method will be called after closing the camera
+     * */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // if the result is capturing Image
+        if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+
+                // successfully captured the image
+                // launching upload activity
+                launchUploadActivity(true);
+
+
+            } else if (resultCode == RESULT_CANCELED) {
+
+                // user cancelled Image capture
+                Toast.makeText(getApplicationContext(),
+                        "User cancelled image capture", Toast.LENGTH_SHORT)
+                        .show();
+
+            } else {
+                // failed to capture image
+                Toast.makeText(getApplicationContext(),
+                        "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+        } else if (requestCode == CAMERA_CAPTURE_VIDEO_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+
+                // video successfully recorded
+                // launching upload activity
+                launchUploadActivity(false);
+
+            } else if (resultCode == RESULT_CANCELED) {
+
+                // user cancelled recording
+                Toast.makeText(getApplicationContext(),
+                        "User cancelled video recording", Toast.LENGTH_SHORT)
+                        .show();
+
+            } else {
+                // failed to record video
+                Toast.makeText(getApplicationContext(),
+                        "Sorry! Failed to record video", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
+    }
+
+    private void launchUploadActivity(boolean isImage){
+        Intent i = new Intent(HomeActivity.this, UploadActivity.class);
+        i.putExtra("filePath", fileUri.getPath());
+        Log.i("filepath",fileUri.getPath().toString());
+
+        i.putExtra("isImage", isImage);
+        startActivity(i);
+    }
+
+    /**
+     * ------------ Helper Methods ----------------------
+     * */
+
+    /**
+     * Creating file uri to store image/video
+     */
+    public Uri getOutputMediaFileUri(int type) {
+        return Uri.fromFile(getOutputMediaFile(type));
+    }
+
+    /**
+     * returning image / video
+     */
+    private static File getOutputMediaFile(int type) {
+
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                Config.IMAGE_DIRECTORY_NAME);
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d(TAG, "Oops! Failed create "
+                        + Config.IMAGE_DIRECTORY_NAME + " directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File mediaFile;
+        if (type == MEDIA_TYPE_IMAGE) {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator
+                    + "IMG_" + timeStamp + ".jpg");
+        } else if (type == MEDIA_TYPE_VIDEO) {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator
+                    + "VID_" + timeStamp + ".mp4");
+        } else {
+            return null;
+        }
+
+        return mediaFile;
+    }
+
 }

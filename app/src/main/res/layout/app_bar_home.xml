@@ -22,13 +22,11 @@
                 android:layout_width="80dp"
                 android:layout_height="60dp"
                 android:src="@drawable/logo"/>
-
-<include layout="@layout/toolbar_icons"></include>
-
         </android.support.v7.widget.Toolbar>
-
+        
     </android.support.design.widget.AppBarLayout>
 
+    <include layout="@layout/content_home" />
     <android.support.design.widget.FloatingActionButton
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fab"
@@ -49,8 +47,6 @@
         android:layout_gravity="bottom"
         app:backgroundTint="#20c4b8b8"
         app:borderWidth="2dp" />
-
-    <include layout="@layout/content_home" />
 
 
 </android.support.design.widget.CoordinatorLayout>

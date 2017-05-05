@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-   <!-- <item
+    <item
         android:id="@+id/jhvbh"
         android:orderInCategory="100"
         android:title=""
@@ -13,22 +13,11 @@
         android:orderInCategory="100"
         android:title=""
         android:icon="@drawable/ic_menu_shop"
-        app:showAsAction="always"
-        android:visible="false"/>
-    <item
-        android:id="@+id/hh2"
-        android:orderInCategory="100"
-        android:title=""
-        android:icon="@drawable/ic_menu_shop"
-        app:showAsAction="always"
-        android:visible="true"/>
+        app:showAsAction="always" />
     <item
         android:id="@+id/jhbjhbh"
         android:orderInCategory="100"
         android:title=""
         android:icon="@drawable/ic_navi_menu"
-        app:showAsAction="always" />-->
-
-
+        app:showAsAction="always" />
 </menu>
-

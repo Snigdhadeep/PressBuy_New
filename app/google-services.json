@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "423630864148",
+    "firebase_url": "https://pressbuy-b52d6.firebaseio.com",
+    "project_id": "pressbuy-b52d6",
+    "storage_bucket": "pressbuy-b52d6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:423630864148:android:0c0dc9359ecc3008",
+        "android_client_info": {
+          "package_name": "com.techpenta.pressbuy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "423630864148-5rv5s76stspjsi7i7ckqn8alm733h975.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techpenta.pressbuy",
+            "certificate_hash": "c17ef608c4eb66f00ddf9e2a4646fb1dcd162c7d"
+          }
+        },
+        {
+          "client_id": "423630864148-q2b5osjk159rfm379v5g3mrjnskfssun.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvw9L-7sZWlkPWsNru8RIrNpR0djQpxhA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "423630864148-q2b5osjk159rfm379v5g3mrjnskfssun.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,11 +2,9 @@ package com.techpenta.pressbuy;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,12 +19,9 @@ import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class LowerTab extends AppCompatActivity
@@ -45,31 +40,6 @@ public class LowerTab extends AppCompatActivity
     LinearLayout btnWorkwithUs;
     ImageView navheader1;
     ImageView navheader2;
-    WebView  tvCounter_value;
-    ImageView menuSearchToolbar;
-    LinearLayout menuBagToolbar;
-    ImageView menuNavToolbar;
-    LinearLayout llsearch;
-    LinearLayout llcart;
-    LinearLayout lllocation;
-    RelativeLayout slidetab2;
-    LinearLayout slidetab1;
-    LinearLayout slidetab3;
-    Boolean slidecount1=true;
-    Boolean slidecount2=true;
-    Boolean slidecount3=true;
-    WebView wvslidecart;
-
-    EditText etSearch;
-    ImageView ivSearch;
-    String txtSearch;
-
-    ImageView slideaddcart;
-    ImageView slideremovecart;
-
-    EditText etLocation;
-    ImageView ivLocation;
-    String txtLocationSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,178 +57,6 @@ public class LowerTab extends AppCompatActivity
         btnPrivacy=(LinearLayout)findViewById(R.id.btnPrivacy);
         btnContactus=(LinearLayout)findViewById(R.id.btnContactus);
         btnWorkwithUs=(LinearLayout)findViewById(R.id.btnWorkwithUs);
-
-        tvCounter_value=(WebView) findViewById(R.id.tvCounter_value);
-
-        wvslidecart=(WebView) findViewById(R.id.wvslidecart) ;
-        /* toolWeb.loadUrl("http://www.pressbuy.com/rest-api/");*/
-        tvCounter_value.setBackgroundColor(Color.RED);
-
-        // here the icon webview
-
-
-        wvslidecart.setBackgroundColor(Color.RED);
-
-
-
-        llsearch=(LinearLayout) findViewById(R.id.llsearch);
-        llcart=(LinearLayout) findViewById(R.id.llcart);
-        lllocation=(LinearLayout)findViewById(R.id.lllocation);
-
-        slidetab2=(RelativeLayout) findViewById(R.id.slidetab2cart);
-        slidetab1=(LinearLayout) findViewById(R.id.slidetab1search);
-        slidetab3=(LinearLayout)findViewById(R.id.slidetab3location);
-        menuSearchToolbar=(ImageView)findViewById(R.id.menuSearchToolbar);
-        menuBagToolbar=(LinearLayout) findViewById(R.id.menuBagToolbar);
-        menuNavToolbar=(ImageView)findViewById(R.id.menuNavToolbar);
-
-
-        etSearch=(EditText)findViewById(R.id.etSearch);
-        ivSearch=(ImageView)findViewById(R.id.ivSearch);
-
-
-
-        slideaddcart=(ImageView)findViewById(R.id.slideaddcart);
-        slideremovecart=(ImageView)findViewById(R.id.slideremovecart);
-
-        etLocation=(EditText)findViewById(R.id.etLocation);
-        ivLocation=(ImageView)findViewById(R.id.ivLocation);
-
-        slideaddcart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-                i.putExtra("id", "https://www.pressbuy.com/cart/?header-off=1");
-                startActivity(i);
-            }
-        });
-        slideremovecart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-                i.putExtra("id", "http://www.pressbuy.com/cart/?empty-cart&header-off=1");
-                startActivity(i);
-            }
-        });
-
-        ivSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                txtSearch=etSearch.getText().toString();
-                final Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-                i.putExtra("idsearch1", "https://www.pressbuy.com/?s=");
-                i.putExtra("txtSearch",""+txtSearch);
-                i.putExtra("idsearch2","&header-off=1");
-                Log.i("txtSearch",txtSearch);
-                startActivity(i);
-            }
-        });
-
-
-
-
-
-
-        menuSearchToolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                llcart.setVisibility(View.GONE);
-                if(slidecount1==true) {
-                    lllocation.setVisibility(View.GONE);
-                    llsearch.setVisibility(View.VISIBLE);
-                    slidetab1.setVisibility(View.VISIBLE);
-                    Animation animation1 =
-                            AnimationUtils.loadAnimation(getApplicationContext(), R.anim.right_to_left);
-
-                    slidetab1.startAnimation(animation1);
-                    slidecount1 = false;
-                }
-                else {
-
-                    slidetab1.setVisibility(View.GONE);
-                    llsearch.setVisibility(View.GONE);
-                    slidecount1=true;
-                }
-            }
-        });
-
-
-
-        menuBagToolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                lllocation.setVisibility(View.GONE);
-                llsearch.setVisibility(View.GONE);
-                if(slidecount2==true) {
-
-
-                    wvslidecart.loadUrl("http://www.pressbuy.com/rest-api-android/");
-                    llcart.setVisibility(View.VISIBLE);
-                    slidetab2.setVisibility(View.VISIBLE);
-                    Animation animation1 =
-                            AnimationUtils.loadAnimation(getApplicationContext(), R.anim.right_to_left);
-                    slidetab2.startAnimation(animation1);
-                    slidecount2 = false;
-                }
-                else {
-
-                    slidetab2.setVisibility(View.GONE);
-
-                    llcart.setVisibility(View.GONE);
-                    slidecount2=true;
-                }
-            }
-        });
-
-
-        menuNavToolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                llcart.setVisibility(View.GONE);
-                llsearch.setVisibility(View.GONE);
-                if(slidecount3==true) {
-
-
-
-                    lllocation.setVisibility(View.VISIBLE);
-                    slidetab3.setVisibility(View.VISIBLE);
-                    Animation animation1 =
-                            AnimationUtils.loadAnimation(getApplicationContext(), R.anim.right_to_left);
-
-                    slidetab3.startAnimation(animation1);
-                    slidecount3 = false;
-                }
-                else {
-
-                    slidetab3.setVisibility(View.GONE);
-                    lllocation.setVisibility(View.GONE);
-                    slidecount3=true;
-                }
-
-            }
-        });
-
-
-
-        ivLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                txtLocationSearch=etLocation.getText().toString();
-                final Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-                i.putExtra("idsearch1", "https://www.pressbuy.com/search-location/?header-off=1&&zip=%5C");
-                i.putExtra("txtSearch",""+txtLocationSearch);
-                Log.i("txtSearch",txtLocationSearch);
-                startActivity(i);
-            }
-        });
-
-
-
 
         final FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
         fab2.setOnClickListener(new View.OnClickListener() {
@@ -344,7 +142,7 @@ public class LowerTab extends AppCompatActivity
             public void onClick(View v) {
 
                 Intent i = new Intent(getApplicationContext(), LowerTab.class);
-                i.putExtra("id", "http://www.pressbuy.com/about-us/?header-off=1");
+                i.putExtra("id", "http://www.pressbuy.com/about-us/");
 
                 if((clickcount%2)!=0) {
                     startActivity(i);
@@ -357,7 +155,7 @@ public class LowerTab extends AppCompatActivity
             public void onClick(View v) {
 
                 Intent i = new Intent(getApplicationContext(), LowerTab.class);
-                i.putExtra("id", "http://www.pressbuy.com/terms-of-use/?header-off=1");
+                i.putExtra("id", "http://www.pressbuy.com/terms-of-use/");
                 if((clickcount%2)!=0) {
                     startActivity(i);
                 }
@@ -369,7 +167,7 @@ public class LowerTab extends AppCompatActivity
             public void onClick(View v) {
 
                 Intent i = new Intent(getApplicationContext(), LowerTab.class);
-                i.putExtra("id", "http://www.pressbuy.com/privacy/?header-off=1");
+                i.putExtra("id", "http://www.pressbuy.com/privacy/");
                 if((clickcount%2)!=0) {
                     startActivity(i);
                 }
@@ -380,7 +178,7 @@ public class LowerTab extends AppCompatActivity
             public void onClick(View v) {
 
                 Intent i = new Intent(getApplicationContext(), LowerTab.class);
-                i.putExtra("id", "http://www.pressbuy.com/contact/?header-off=1");
+                i.putExtra("id", "http://www.pressbuy.com/contact/");
                 if((clickcount%2)!=0) {
                     startActivity(i);
                 }
@@ -392,7 +190,7 @@ public class LowerTab extends AppCompatActivity
 
 
                 Intent i = new Intent(getApplicationContext(), LowerTab.class);
-                i.putExtra("id", "http://www.pressbuy.com/work-with-us/?header-off=1");
+                i.putExtra("id", "http://www.pressbuy.com/work-with-us/");
                 if((clickcount%2)!=0) {
                     startActivity(i);
                 }
@@ -408,7 +206,7 @@ public class LowerTab extends AppCompatActivity
             public void onClick(View v) {
 
                 Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-                i.putExtra("id", "http://www.pressbuy.com/mobile-home/?header-off=1");
+                i.putExtra("id", "http://www.pressbuy.com/mobile-home/");
                 startActivity(i);
             }
         });
@@ -419,7 +217,7 @@ public class LowerTab extends AppCompatActivity
             public void onClick(View v) {
 
                 Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-                i.putExtra("id", "http://www.pressbuy.com/contact/?header-off=1");
+                i.putExtra("id", "http://www.pressbuy.com/contact/");
                 startActivity(i);
             }
         });
@@ -451,9 +249,6 @@ public class LowerTab extends AppCompatActivity
             super.onPageFinished(view, url);
 
             progressBar.setVisibility(View.GONE);
-            tvCounter_value.loadUrl("http://www.pressbuy.com/rest-api-android/");
-
-
 
         }
     }
@@ -468,7 +263,7 @@ public class LowerTab extends AppCompatActivity
         }
     }
 
-   /* @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.lower_tab, menu);
@@ -488,7 +283,7 @@ public class LowerTab extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -498,36 +293,36 @@ public class LowerTab extends AppCompatActivity
 
         if (id == R.id.nav_allitems) {
             Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-            i.putExtra("id", "http://www.pressbuy.com/all-items/?header-off=1");
+            i.putExtra("id", "http://www.pressbuy.com/all-items/");
             startActivity(i);
         } else if (id == R.id.nav_forBuyers) {
 
             Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-            i.putExtra("id", "http://www.pressbuy.com/for-buyers/?header-off=1");
+            i.putExtra("id", "http://www.pressbuy.com/for-buyers/");
             startActivity(i);
 
         } else if (id == R.id.nav_forSellers) {
 
             Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-            i.putExtra("id", "http://www.pressbuy.com/for-sellers/?header-off=1");
+            i.putExtra("id", "http://www.pressbuy.com/for-sellers/");
             startActivity(i);
 
         } else if (id == R.id.nav_upload) {
 
             Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-            i.putExtra("id", "http://www.pressbuy.com/upload/?header-off=1");
+            i.putExtra("id", "http://www.pressbuy.com/upload/");
             startActivity(i);
 
         } else if (id == R.id.nav_faq) {
 
             Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-            i.putExtra("id", "http://www.pressbuy.com/faq/?header-off=1");
+            i.putExtra("id", "http://www.pressbuy.com/faq/");
             startActivity(i);
 
         } else if (id == R.id.nav_contact) {
 
             Intent i = new Intent(getApplicationContext(), DrawerActivity.class);
-            i.putExtra("id", "http://www.pressbuy.com/contact/?header-off=1");
+            i.putExtra("id", "http://www.pressbuy.com/contact/");
             startActivity(i);
 
 
